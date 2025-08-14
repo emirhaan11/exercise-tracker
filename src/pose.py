@@ -8,7 +8,8 @@ class PoseEstimator:
         self.pose = self.mp_pose.Pose(static_image_mode=static,
                                       model_complexity=complexity,
                                       enable_segmentation=False,
-                                      smooth_segmentation=smooth)
+                                      smooth_segmentation=smooth,
+                                      smooth_landmarks=True)
         self.drawer = mp.solutions.drawing_utils
         self.styles = mp.solutions.drawing_styles
 

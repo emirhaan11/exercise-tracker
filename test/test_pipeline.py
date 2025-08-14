@@ -1,6 +1,6 @@
 import time
 import cv2
-from capture import VideoCapture
+from test_with_video import VideoCapture
 from pose import PoseEstimator
 from features import angle_3pts, ema, lm_xy
 from rules import squat_depth_ok
@@ -19,11 +19,20 @@ if __name__ == '__main__':
     state = None
     reps = 0
 
+    counter.reset()
     # OPENING CAM
     while cam.is_open():
         ret, frame = cam.read()
         if not ret:
             break
+
+        frame = cv2.resize(
+            frame,
+            None,  # No specific output size, we use scaling factors instead
+            fx=0.6,
+            fy=0.6,
+            interpolation=cv2.INTER_AREA  # Good for shrinking
+        )
 
         # DETERMINING THE ANGLES
         h, w = frame.shape[:2]

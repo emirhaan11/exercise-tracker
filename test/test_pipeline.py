@@ -1,4 +1,6 @@
 import time
+from tkinter.constants import RIGHT
+
 import cv2
 from test_with_video import VideoCapture
 from pose import PoseEstimator
@@ -6,18 +8,22 @@ from features import angle_3pts, ema, lm_xy
 from rules import squat_depth_ok
 from rep_counter import SquatRepCounter, SquatRepCounterConfig
 
-LEFT_HIP, LEFT_KNEE, LEFT_ANKLE = 23, 25, 27
+
+LEFT_SHOULDER, LEFT_HIP, LEFT_KNEE, LEFT_ANKLE = 11, 23, 25, 27
+RIGHT_SHOULDER, RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE = 12, 24, 26, 28
 
 if __name__ == '__main__':
     # ADDING OBJECTS
     cam = VideoCapture()
     pose = PoseEstimator()
     counter = SquatRepCounter()
+    #############################################################################################################
 
     # VARIABLES
     smooth_angle = None
     state = None
     reps = 0
+    #############################################################################################################
 
     counter.reset()
     # OPENING CAM
@@ -33,6 +39,7 @@ if __name__ == '__main__':
             fy=0.6,
             interpolation=cv2.INTER_AREA  # Good for shrinking
         )
+        #############################################################################################################
 
         # DETERMINING THE ANGLES
         h, w = frame.shape[:2]
@@ -49,11 +56,14 @@ if __name__ == '__main__':
                 knee_angle = angle_3pts(hip, knee, ankle)
 
         smooth_angle = ema(smooth_angle, knee_angle, alpha=0.3)
+        #############################################################################################################
 
         # COUNTING REP
         state, reps, just_counted = counter.update(angle=smooth_angle, now=time.monotonic())
 
-        # ADDING INFORMATION TO THE SCREEN AND SHOWING THE SCREEN
+        #############################################################################################################
+
+        # ADDING INFORMATION TO THE SCREEN AND SHOWING
         out = frame.copy()
         out = pose.draw(frame_bgr=out, res=res)
 
@@ -100,6 +110,14 @@ if __name__ == '__main__':
                     0.8,
                     (255, 255, 255),
                     2)
+
+        #############################################################################################################
+
+        # CHECKING POSITION
+            # KNEE POSITION
+
+
+        #############################################################################################################
 
         cv2.imshow('Camera', out)
 

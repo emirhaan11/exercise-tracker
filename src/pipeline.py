@@ -6,24 +6,29 @@ from features import angle_3pts, ema, lm_xy
 from rules import squat_depth_ok
 from rep_counter import SquatRepCounter, SquatRepCounterConfig
 
-LEFT_HIP, LEFT_KNEE, LEFT_ANKLE = 23, 25, 27
+LEFT_SHOULDER, LEFT_HIP, LEFT_KNEE, LEFT_ANKLE = 11, 23, 25, 27
+RIGHT_SHOULDER, RIGHT_HIP, RIGHT_KNEE, RIGHT_ANKLE = 12, 24, 26, 28
 
 if __name__ == '__main__':
     # ADDING OBJECTS
     cam = VideoCapture()
     pose = PoseEstimator()
     counter = SquatRepCounter()
+    #############################################################################################################
 
     # VARIABLES
     smooth_angle = None
     state = None
     reps = 0
+    #############################################################################################################
 
     # OPENING CAM
     while cam.is_open():
         ret, frame = cam.read()
         if not ret:
             break
+
+        #############################################################################################################
 
         # DETERMINING THE ANGLES
         h, w = frame.shape[:2]
@@ -33,16 +38,19 @@ if __name__ == '__main__':
         if res.pose_landmarks:
             lms = res.pose_landmarks.landmark
 
-            if res.pose_landmarks:
-                hip = lm_xy(lms[LEFT_HIP], w, h)
-                knee = lm_xy(lms[LEFT_KNEE], w, h)
-                ankle = lm_xy(lms[LEFT_ANKLE], w, h)
-                knee_angle = angle_3pts(hip, knee, ankle)
+            hip = lm_xy(lms[LEFT_HIP], w, h)
+            knee = lm_xy(lms[LEFT_KNEE], w, h)
+            ankle = lm_xy(lms[LEFT_ANKLE], w, h)
+            knee_angle = angle_3pts(hip, knee, ankle)
 
         smooth_angle = ema(smooth_angle, knee_angle, alpha=0.3)
 
+        #############################################################################################################
+
         # COUNTING REP
         state, reps, just_counted = counter.update(angle=smooth_angle, now=time.monotonic())
+
+        #############################################################################################################
 
         # ADDING INFORMATION TO THE SCREEN AND SHOWING THE SCREEN
         out = frame.copy()
@@ -92,9 +100,19 @@ if __name__ == '__main__':
                     (255, 255, 255),
                     2)
 
+        #############################################################################################################
+
+        # CHECKING POSITION
+
+        # KNEE POSITION
+
+
+        #############################################################################################################
+
         cv2.imshow('Camera', out)
 
         if cv2.waitKey(1) & 0xFF == 27:
             break
+
     cam.release()
     cv2.destroyAllWindows()

@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 @dataclass()
 class SquatRepCounterConfig:
-    down_thresh: float = 90.0  # Maximum knee angle to be considered as down
-    up_thresh: float = 150.0  # Minimum knee angle to be considered as up
+    down_thresh: float = 95.0  # Maximum knee angle to be considered as down
+    up_thresh: float = 125.0  # Minimum knee angle to be considered as up
     min_bottom_frames: int = 3  # Minimum number of frames to stay in the bottom position
     min_top_frames: int = 3  # Minimum number of frames to stay in the top position
     min_rep_time: float = 0.4  # Minimum time (seconds) between two reps to prevent bouncing

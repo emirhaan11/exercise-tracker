@@ -2,7 +2,7 @@ import os
 import csv
 import cv2
 
-from read_video import VideoCapture
+from video_capture import VideoCapture
 from pose import PoseEstimator
 from rep_counter import SquatRepCounter, SquatRepCounterConfig
 from features import (

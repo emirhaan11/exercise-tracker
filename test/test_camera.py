@@ -1,5 +1,5 @@
 import cv2
-from capture import VideoCapture
+from core.capture import VideoCapture
 
 if __name__ == '__main__':
     cam = VideoCapture()

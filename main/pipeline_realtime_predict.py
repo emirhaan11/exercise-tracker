@@ -1,10 +1,10 @@
 import time
 import cv2
 from pathlib import Path
-from capture import CamCapture
-from pose import PoseEstimator
-from rep_counter import SquatRepCounter, SquatRepCounterConfig
-from features import (
+from core.capture import CamCapture
+from core.pose import PoseEstimator
+from core.rep_counter import SquatRepCounter, SquatRepCounterConfig
+from core.features import (
     lm_xy, ema, angle_3pts,
     torso_tilt_deg, hip_knee_alignment_deg, heel_lift_norm,
     squat_depth_ok

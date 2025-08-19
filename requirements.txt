@@ -1,8 +1,10 @@
 opencv-python
 mediapipe
 numpy
-scipy
-torch/tf
-pydantic
-rich
-sounddevice/playsound
+scikit-learn
+joblib
+Jupyter
+pandas
+
+
+

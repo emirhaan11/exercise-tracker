@@ -1,6 +1,6 @@
 import cv2
-from capture import VideoCapture
-from pose import PoseEstimator
+from core.capture import VideoCapture
+from core.pose import PoseEstimator
 
 if __name__ == '__main__':
     cam = VideoCapture()

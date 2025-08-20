@@ -20,10 +20,10 @@ MIN_TOP_FRAMES     = 3
 MIN_BOTTOM_FRAMES  = 3
 
 # -------- NEW: Forced window logging when no full rep --------
-FORCE_LOG_FRAMES   = 45   # her 45 karede (yaklaşık 1.5 sn @30fps) bir satır yaz
-MIN_VALID_FRAMES   = 10   # pencere içinde en az bu kadar geçerli frame olmalı
+FORCE_LOG_FRAMES   = 45   # Write a line every 45 frames (about 1.5 sec @30fps)
+MIN_VALID_FRAMES   = 10   # there should be at least as many valid frames in the window
 
-# Output CSV (rep-or-window, rep_id yok)
+# Output CSV 
 REP_LOG_PATH = "../../notebooks/logs/bad_rep.csv"
 REP_FIELDS = [
     "min_knee_angle",
@@ -173,7 +173,6 @@ if __name__ == '__main__':
                 heel_lift_max_norm = max(heel_lift_max_norm, hlift)
                 window_buf["heel_max"] = max(window_buf["heel_max"], hlift)
 
-        # valid frame sayımı (window için)
         if res and res.pose_landmarks and shoulder and hip:
             window_buf["valid_frames"] += 1
         window_buf["frames_in_window"] += 1
@@ -201,7 +200,6 @@ if __name__ == '__main__':
             hip_knee_aligns.clear()
             heel_lift_max_norm = 0.0
 
-            # rep yazınca pencereyi de sıfırlayalım ki çift yazmasın
             _flush_and_reset(window_buf, REP_LOG_PATH)
 
         # ---------- forced window log (no rep) ----------
@@ -229,7 +227,6 @@ if __name__ == '__main__':
         if cv2.waitKey(1) & 0xFF == 27:
             break
 
-    # video bitti ama son pencere yazılmadıysa yaz
     _flush_and_reset(window_buf, REP_LOG_PATH)
 
     cam.release()
